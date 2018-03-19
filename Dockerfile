@@ -29,11 +29,14 @@ EXPOSE 143
 # Install Composer
 COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
 
-# Create App Directory
-RUN mkdir /var/www/app; cd /var/www/app
+# Change into directory
+RUN cd /var/www
 
 # Download and Unzip ProcessWire
 RUN wget https://github.com/processwire/processwire/archive/master.zip -O processwire.zip; unzip processwire.zip; rm processwire.zip
+
+# Rename Directory
+RUN mv /var/www/processwire-master /var/www/app; cd /var/www/app
 
 # Install Dependencies
 RUN /usr/bin/composer install
