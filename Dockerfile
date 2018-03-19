@@ -1,9 +1,9 @@
 FROM ubuntu:xenial
 MAINTAINER Sascha Wessel <swessel@gr4yweb.de>
 
-# Install apache, PHP, and supplimentary programs. openssh-server, curl, and lynx-cur are for debugging the container.
+# Install all Packages
 RUN apt-get update && apt-get -y upgrade && apt-get -y dist-upgrade && DEBIAN_FRONTEND=noninteractive apt-get -y install \
-    wget unzip apache2 php7.0 libapache2-mod-php7.0 php7.0 php7.0-cli php7.0-gd php7.0-json php7.0-ldap php7.0-mbstring php7.0-mysql php7.0-xml php7.0-xsl php7.0-zip php7.0-soap 
+    wget unzip curl git apache2 php7.0 libapache2-mod-php7.0 php7.0 php7.0-cli php7.0-gd php7.0-json php7.0-ldap php7.0-mbstring php7.0-mysql php7.0-xml php7.0-xsl php7.0-zip php7.0-soap 
 
 # Enable apache mods.
 RUN a2enmod php7.0
@@ -20,12 +20,28 @@ ENV APACHE_LOG_DIR /var/log/apache2
 ENV APACHE_LOCK_DIR /var/lock/apache2
 ENV APACHE_PID_FILE /var/run/apache2.pid
 
-# Expose apache.
+# Expose HTTP
 EXPOSE 80
 
-# Copy this repo into place.
+# Expose HTTPS
+EXPOSE 143
+
+# Download Composer installer
+RUN curl -sS https://getcomposer.org/installer -o composer-setup.php; 
+
+# Verify Composer Installer
+RUN php -r "if (hash_file('SHA384', 'composer-setup.php') === '669656bab3166a7aff8a7506b8cb2d1c292f042046c5a994c43155c0be6190fa0355160742ab2e1c88d40d5be660b410') { echo 'Installer verified'; } else { echo 'Installer corrupt'; unlink('composer-setup.php'); } echo PHP_EOL;"
+
+# Install Composer globally
+RUN sudo php composer-setup.php --install-dir=/usr/local/bin --filename=composer
+
+# Create App Directory
 RUN mkdir /var/www/app; cd /var/www/app
+
+# Download and Unzip ProcessWire
 RUN wget https://github.com/processwire/processwire/archive/master.zip -O processwire.zip; unzip processwire.zip; rm processwire.zip
+
+# Install Dependencies
 RUN composer install
 
 # Update the default apache site with the config we created.
