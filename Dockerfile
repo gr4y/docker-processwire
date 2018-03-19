@@ -36,7 +36,7 @@ RUN mkdir /var/www/app; cd /var/www/app
 RUN wget https://github.com/processwire/processwire/archive/master.zip -O processwire.zip; unzip processwire.zip; rm processwire.zip
 
 # Install Dependencies
-RUN composer install
+RUN /usr/bin/composer install
 
 # Update the default apache site with the config we created.
 ADD apache.conf /etc/apache2/sites-enabled/000-default.conf
