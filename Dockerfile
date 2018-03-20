@@ -33,10 +33,10 @@ COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
 RUN cd /var/www
 
 # Download and Unzip ProcessWire
-RUN wget https://github.com/processwire/processwire/archive/master.zip -O processwire.zip; unzip processwire.zip; rm processwire.zip
+RUN wget https://github.com/processwire/processwire/archive/master.zip -O processwire.zip; unzip processwire.zip -d /var/www; rm processwire.zip; mv /var/www/processwire-master /var/www/app
 
-# Rename Directory
-RUN mv /var/www/processwire-master /var/www/app; cd /var/www/app
+# Change into
+RUN cd /var/www/app
 
 # Install Dependencies
 RUN /usr/bin/composer install
