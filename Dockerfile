@@ -29,8 +29,8 @@ EXPOSE 443
 # Install Composer
 COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
 
-# Change into directory
-RUN cd /var/www
+# Change into directory and remove /var/www/html
+RUN cd /var/www; rm -r /var/www/html
 
 # Download and Unzip ProcessWire
 RUN wget https://github.com/processwire/processwire/archive/master.zip -O processwire.zip; unzip processwire.zip -d /var/www; rm processwire.zip; mv /var/www/processwire-master /var/www/html
