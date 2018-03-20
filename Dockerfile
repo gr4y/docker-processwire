@@ -44,5 +44,7 @@ RUN /usr/bin/composer install
 # Update the default apache site with the config we created.
 ADD apache.conf /etc/apache2/sites-enabled/000-default.conf
 
+VOLUME /var/www/app
+
 # By default start up apache in the foreground, override with /bin/bash for interative.
 CMD /usr/sbin/apache2ctl -D FOREGROUND
