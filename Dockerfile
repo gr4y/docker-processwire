@@ -33,7 +33,7 @@ COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
 RUN cd /var/www; rm -r /var/www/html
 
 # Download and Unzip ProcessWire
-RUN wget https://github.com/processwire/processwire/archive/master.zip -O processwire.zip; unzip processwire.zip -d /var/www; rm processwire.zip; mv /var/www/processwire-master /var/www/html
+RUN wget https://github.com/processwire/processwire/archive/master.zip -O processwire.zip; unzip processwire.zip -d /var/www; rm processwire.zip; mv /var/www/processwire-master /var/www/html; chown www-data:www-data
 
 # Change into
 WORKDIR /var/www/html
