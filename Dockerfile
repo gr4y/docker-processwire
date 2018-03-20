@@ -36,7 +36,7 @@ RUN cd /var/www
 RUN wget https://github.com/processwire/processwire/archive/master.zip -O processwire.zip; unzip processwire.zip -d /var/www; rm processwire.zip; mv /var/www/processwire-master /var/www/app
 
 # Change into
-RUN cd /var/www/app
+WORKDIR /var/www/app
 
 # Install Dependencies
 RUN /usr/bin/composer install
