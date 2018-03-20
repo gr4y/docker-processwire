@@ -24,7 +24,7 @@ ENV APACHE_PID_FILE /var/run/apache2.pid
 EXPOSE 80
 
 # Expose HTTPS
-EXPOSE 143
+EXPOSE 443
 
 # Install Composer
 COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
