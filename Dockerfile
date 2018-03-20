@@ -34,15 +34,14 @@ RUN cd /var/www; rm -r /var/www/html
 
 # Download and Unzip ProcessWire
 RUN wget https://github.com/processwire/processwire/archive/master.zip -O processwire.zip; unzip processwire.zip -d /var/www; rm processwire.zip; mv /var/www/processwire-master /var/www/html
-RUN chown -R www-data:www-data /var/www/html
-
 # Change into
 WORKDIR /var/www/html
+VOLUME /var/www/html
+
+RUN chown -R www-data:www-data /var/www && find /var/www -type d -exec chmod 750 {} \; && find /var/www -type f -exec chmod 640 {} \;
 
 # Install Dependencies
 RUN /usr/bin/composer install
-
-VOLUME /var/www/html
 
 # By default start up apache in the foreground, override with /bin/bash for interative.
 CMD /usr/sbin/apache2ctl -D FOREGROUND
