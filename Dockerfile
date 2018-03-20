@@ -33,18 +33,15 @@ COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
 RUN cd /var/www
 
 # Download and Unzip ProcessWire
-RUN wget https://github.com/processwire/processwire/archive/master.zip -O processwire.zip; unzip processwire.zip -d /var/www; rm processwire.zip; mv /var/www/processwire-master /var/www/app
+RUN wget https://github.com/processwire/processwire/archive/master.zip -O processwire.zip; unzip processwire.zip -d /var/www; rm processwire.zip; mv /var/www/processwire-master /var/www/html
 
 # Change into
-WORKDIR /var/www/app
+WORKDIR /var/www/html
 
 # Install Dependencies
 RUN /usr/bin/composer install
 
-# Update the default apache site with the config we created.
-ADD apache.conf /etc/apache2/sites-enabled/000-default.conf
-
-VOLUME /var/www/app
+VOLUME /var/www/html
 
 # By default start up apache in the foreground, override with /bin/bash for interative.
 CMD /usr/sbin/apache2ctl -D FOREGROUND
