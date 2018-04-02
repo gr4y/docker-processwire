@@ -46,7 +46,7 @@ RUN /usr/bin/composer install
 # Move .htaccess into place
 RUN mv /var/www/html/htaccess.txt /var/www/html/.htaccess
 # Uncomment RewriteBase
-RUN sed -i '0,# RewriteBase /s,# RewriteBase /,RewriteBase /,g' /var/www/html/.htaccess
+RUN sed -i '0,# RewriteBase /,s,# RewriteBase /,RewriteBase /,g' /var/www/html/.htaccess
 
 # By default start up apache in the foreground, override with /bin/bash for interative.
 CMD /usr/sbin/apache2ctl -D FOREGROUND
