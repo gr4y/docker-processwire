@@ -43,10 +43,11 @@ RUN chown -R www-data:www-data /var/www && find /var/www -type d -exec chmod 750
 # Install Dependencies
 RUN /usr/bin/composer install
 
+# Uncomment RewriteBase
+RUN sed -i 's|# RewriteBase /~user/|RewriteBase /|1' /var/www/html/htaccess.txt
+
 # Move .htaccess into place
 RUN mv /var/www/html/htaccess.txt /var/www/html/.htaccess
-# Uncomment RewriteBase
-RUN sed -i '0,# RewriteBase /,s,# RewriteBase /,RewriteBase /,g' /var/www/html/.htaccess
 
 # By default start up apache in the foreground, override with /bin/bash for interative.
 CMD /usr/sbin/apache2ctl -D FOREGROUND
